@@ -1,0 +1,28 @@
+services:
+    admin.settings_new:
+        class: Gekomod\SettingsBundle\Admin\SettingsAdmin
+        tags:
+            - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Ustawienia}
+        arguments: [~, Gekomod\SettingsBundle\Entity\Settings, ~]
+        public: true
+
+    myproject.twig.toolbox_extension:
+        class: Gekomod\SettingsBundle\Twig\PathExtension
+        # Inject doctrine as first parameter
+        arguments:
+          ["@doctrine","@service_container","@twig.loader.filesystem"]
+        tags:
+          -  { name: twig.extension }
+
+    sonata.block.service.users:
+        class: Gekomod\SettingsBundle\Block\UsersBlockService
+        arguments:
+          [~, "@templating","@doctrine"]
+        tags:
+        - { name: "sonata.block" }
+
+    settings.new:
+        class: Gekomod\SettingsBundle\Service\Settings_Get
+        arguments:
+          ["@doctrine"]
+        public: true
