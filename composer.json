@@ -1,5 +1,5 @@
 {
-    "name": "Gekomod/settings-bundle",
+    "name": "gekomod/settings-bundle",
     "type": "symfony-bundle",
     "description": "Symfony Gekomod/SettingsBundle",
     "keywords": [
