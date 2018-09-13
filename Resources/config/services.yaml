@@ -26,3 +26,17 @@ services:
         arguments:
           ["@doctrine"]
         public: true
+    _defaults: { public: false, autowire: true, autoconfigure: true }
+    Gekomod\SettingsBundle\Controller\:
+        resource: '%kernel.project_dir%/vendor/gekomod/settings-bundle/Controller'
+        autowire: true
+        tags: ['controller.service_arguments']
+    admin.settingsop:
+        class: Gekomod\SettingsBundle\Admin\SettingsopAdmin
+        tags:
+        - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Cache}
+        arguments:
+        - null
+        - null
+        - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
+        public: true

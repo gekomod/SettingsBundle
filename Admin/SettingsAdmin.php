@@ -8,8 +8,20 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Knp\Menu\ItemInterface as MenuItemInterface;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\UrlGeneratorInterface;
 
 class SettingsAdmin extends AbstractAdmin {
+
+    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    {
+        $admin = $this->isChild() ? $this->getParent() : $this;
+
+        $menu->addChild('Clear Cache', [
+            'uri' => '/admin/gekomod/settings/settings/cache'
+        ]);
+    }
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -48,7 +60,7 @@ class SettingsAdmin extends AbstractAdmin {
             ->add('id', null, array())
 	    ->add('active','boolean', [
             'editable' => true
-        ])            
+        ])
         ;
     }
 }
