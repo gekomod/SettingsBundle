@@ -11,8 +11,10 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\UrlGeneratorInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-class SettingsAdmin extends AbstractAdmin {
+class SettingsAdmin extends AbstractAdmin
+{
 
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
@@ -20,7 +22,10 @@ class SettingsAdmin extends AbstractAdmin {
 
         $menu->addChild('Clear Cache', [
             'uri' => '/admin/gekomod/settings/settings/cache'
-        ]);
+        ])->setAttribute('icon','fa fa-eraser');
+        $menu->addChild('Check Updates', [
+            'uri' => '/admin/gekomod/settings/settings/update'
+        ])->setAttribute('icon','glyphicon glyphicon-save');
     }
 
     protected function configureFormFields(FormMapper $formMapper)

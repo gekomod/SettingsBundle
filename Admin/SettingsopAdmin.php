@@ -16,5 +16,6 @@ class SettingsopAdmin extends AbstractAdmin {
         $collection->clearExcept(['cache']);
         $collection->remove('list');
         $collection->add('settings_cache','cache', [], [], [], '', ['https'], ['GET']);
+        $collection->add('settings_update','update', [], [], [], '', ['https'], ['GET']);
     }
 }

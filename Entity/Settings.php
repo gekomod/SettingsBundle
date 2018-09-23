@@ -32,6 +32,12 @@ class Settings
      */
     private $active;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
     public function getId()
     {
         return $this->id;

@@ -32,5 +32,9 @@ class SettingsopCRUDController extends CRUDController
 
         return $this->redirectToRoute('admin_gekomod_settings_settings_list');
     }
+    
+    public function settingsUpdateAction() {
+        Throw new \Exception("ERROR");
+    }
 
 }
