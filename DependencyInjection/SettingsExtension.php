@@ -20,6 +20,6 @@ class SettingsExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config')
         );
         $loader->load('services.yaml');
-
+        $loader->load('twig.yaml');
 }
 }

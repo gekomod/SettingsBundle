@@ -1,6 +1,8 @@
 services:
     admin.settings_new:
         class: Gekomod\SettingsBundle\Admin\SettingsAdmin
+        calls:
+            - [ setTemplate, [list, "@@Settings/settings.html.twig"]]
         tags:
             - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Ustawienia}
         arguments: [~, Gekomod\SettingsBundle\Entity\Settings, ~]
@@ -33,6 +35,8 @@ services:
         tags: ['controller.service_arguments']
     admin.settingsop:
         class: Gekomod\SettingsBundle\Admin\SettingsopAdmin
+        calls:
+            - [ setTemplate, [list, "@@SettingsBundle/cipa.html.twig"]]
         tags:
         - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Cache}
         arguments:
@@ -40,3 +44,9 @@ services:
         - null
         - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
         public: true
+    kernel.listener.debug_listener:
+        class: Gekomod\SettingsBundle\EventListener\DebugListener
+        arguments:
+            ["@service_container","@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

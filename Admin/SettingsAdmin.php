@@ -58,13 +58,20 @@ class SettingsAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name')
+           ->addIdentifier('name', 'text')
             ->add('var', null, [
             'editable' => true
         ])
             ->add('id', null, array())
 	    ->add('active','boolean', [
             'editable' => true
+        ])
+         ->add('_action', null, [
+            'actions' => [
+                'show' => [],
+                'edit' => [],
+                'delete' => [],
+            ]
         ])
         ;
     }
