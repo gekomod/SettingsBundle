@@ -16,13 +16,6 @@ services:
         tags:
           -  { name: twig.extension }
 
-    sonata.block.service.users:
-        class: Gekomod\SettingsBundle\Block\UsersBlockService
-        arguments:
-          [~, "@templating","@doctrine"]
-        tags:
-        - { name: "sonata.block" }
-
     settings.new:
         class: Gekomod\SettingsBundle\Service\Settings_Get
         arguments:
