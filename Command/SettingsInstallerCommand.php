@@ -44,7 +44,7 @@ final class SettingsInstallerCommand extends Command
     {
         $this
             ->setName('settings:install')
-            ->setDescription('Install Settings For Bundle')
+            ->setDescription('Install Settings For Bundle');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
