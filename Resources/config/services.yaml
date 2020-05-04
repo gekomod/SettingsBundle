@@ -1,7 +1,10 @@
 services:
-    settings.installer:
-        class: Gekomod\SettingsBundle\Installer\SettingsInstaller
-        
+
+    settings.command.installer:
+        class: Gekomod\SettingsBundle\Command\SettingsInstallerCommand
+        tags:
+            - { name: 'console.command', command: 'settings:install' }
+
     admin.settings_new:
         class: Gekomod\SettingsBundle\Admin\SettingsAdmin
         calls:
