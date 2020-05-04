@@ -2,6 +2,7 @@
 
 namespace Gekomod\SettingsBundle\Command;
 
+use Gekomod\SettingsBundle\Entity\Settings;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -11,11 +12,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * @author zaba <zaba141@o2.pl>
  */
-final class SettingsInstallerCommand extends Command
+//final class SettingsInstallerCommand extends Command
+final class SettingsInstallerCommand extends ContainerAwareCommand
 {
 
     public function __construct()
@@ -34,6 +37,32 @@ final class SettingsInstallerCommand extends Command
     {
         $this->title($output);
 
+        $ems     = $this->getContainer()->get('doctrine');
+        $connected = $ems->getConnection()->isConnected();
+        
+
+        if ($connected) { $this->info('You Are Not Connected To DataBase Exit from Installation',$output); return false;  } else { $this->success('You Are Connected To Database',$output); }
+        
+
+
+        $entityManager = $ems->getManager();
+        $repository = $ems->getRepository(Settings::class);
+
+        $template = $repository->findOneByName('template');
+
+        if(!$template) {
+        $settings = new Settings();
+        $settings->setName('template');
+        $settings->setVar('default');
+        $settings->setActive(1);
+
+        $entityManager->persist($settings);
+        
+        $entityManager->flush();
+        }
+
+        
+
         $success = $this->install($this->createOptions($input, $output));
 
         if ($success) {
@@ -45,21 +74,21 @@ final class SettingsInstallerCommand extends Command
         return 0;
     }
 
-    public function install(array $options = []): bool
+    public function install()
     {
         return true;
     }
 
+private function test($text,$output): Symfony\Component\Console\Output\OutputInterface
+{
+  $this->info($text,$output);
+}
+
     private function createOptions(InputInterface $input, OutputInterface $output): array
     {
-        $options = ['notifier' => $this->createNotifier($input, $output)];
+        $options = ['notifier' => 'ok'];
 
         return array_filter($options);
-    }
-
-    private function createNotifier(InputInterface $input, OutputInterface $output)
-    {
-        return 0;
     }
 
     private function title(OutputInterface $output): void
