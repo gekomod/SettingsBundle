@@ -1,4 +1,7 @@
 services:
+    settings.installer:
+        class: Gekomod\SettingsBundle\Installer\SettingsInstaller
+        
     admin.settings_new:
         class: Gekomod\SettingsBundle\Admin\SettingsAdmin
         calls:
