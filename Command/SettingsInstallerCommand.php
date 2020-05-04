@@ -2,7 +2,6 @@
 
 namespace Gekomod\SettingsBundle\Command;
 
-use Gekomod\SettingsBundle\Installer\SettingsInstaller;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -18,16 +17,10 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  */
 final class SettingsInstallerCommand extends Command
 {
-    /**
-     * @var CKEditorInstaller
-     */
-    private $installer;
 
-    public function __construct(SettingsInstaller $installer)
+    public function __construct()
     {
-        parent::__construct();
-
-        $this->installer = $installer;
+       parent::__construct();
     }
 
     protected function configure(): void
@@ -41,7 +34,7 @@ final class SettingsInstallerCommand extends Command
     {
         $this->title($output);
 
-        $success = $this->installer->install($this->createOptions($input, $output));
+        $success = $this->install($this->createOptions($input, $output));
 
         if ($success) {
             $this->success('Settings Bundle has been successfully installed...', $output);
@@ -52,6 +45,11 @@ final class SettingsInstallerCommand extends Command
         return 0;
     }
 
+    public function install(array $options = []): bool
+    {
+        return true;
+    }
+
     private function createOptions(InputInterface $input, OutputInterface $output): array
     {
         $options = ['notifier' => $this->createNotifier($input, $output)];
@@ -59,13 +57,9 @@ final class SettingsInstallerCommand extends Command
         return array_filter($options);
     }
 
-    private function createNotifier(InputInterface $input, OutputInterface $output): \Closure
+    private function createNotifier(InputInterface $input, OutputInterface $output)
     {
-        $barOutput = $input->getOption('no-progress-bar') ? new NullOutput() : $output;
-
-        $clear = new ProgressBar($barOutput);
-
-        return 'OK';
+        return 0;
     }
 
     private function title(OutputInterface $output): void
@@ -121,11 +115,5 @@ final class SettingsInstallerCommand extends Command
         $output->writeln($block = sprintf($pattern, str_repeat(' ', strlen($message))));
         $output->writeln(sprintf($pattern, $message));
         $output->writeln($block);
-    }
-
-    private function finishProgressBar(ProgressBar $progress, OutputInterface $output): void
-    {
-        $progress->finish();
-        $output->writeln(['', '']);
     }
 }
