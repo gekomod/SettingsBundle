@@ -12,10 +12,54 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpClient\HttpClient;
+use \Gekomod\SettingsBundle\Form\SettingsType;
+use \Gekomod\SettingsBundle\Form\SettingsFormType;
+use \Gekomod\SettingsBundle\Entity\Settings;
 
 class SettingsopCRUDController extends CRUDController
 {
 
+    public function listAction()
+    {
+    $entityManager = $this->getDoctrine()->getManager();
+
+    $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
+    $rows_settings = $repository->findAll();
+
+    $Settings = new Settings();
+
+    foreach ($rows_settings as $k => $v) {
+        $Settings->getName()->add($v);
+    }
+    
+    $form = $this->createForm( SettingsFormType::class, $Settings,['action' => $this->generateUrl('admin_gekomod_settings_settings_save'),
+                'method' => 'POST',]);
+
+        return $this->renderWithExtraParams('@Settings/admin/index.html.twig',['form' =>  $form->createView()]);
+    }
+    
+    public function settingsSaveAction(Request $request) {
+
+        $get_all = $request->request->get('settings_form');
+
+        foreach($get_all['name'] as $a) {
+            $em = $this->getDoctrine()->getManager();     
+            $query = $em->getRepository(Settings::class)->createQueryBuilder('')
+            ->update(Settings::class, 'u')
+            ->set('u.var', ':var')
+            ->setParameter('var', $a['var'])
+            ->where('u.name = :name')
+            ->setParameter('name', $a['name'])
+            ->getQuery();
+
+            $query->execute();
+        }
+
+        $this->addFlash('success', 'successfully changed the data');
+
+        return $this->redirectToRoute('admin_gekomod_settings_list');
+    }
+    
     public function settingsCacheAction()
     {
         $application = new Application($this->get('kernel'));
@@ -29,9 +73,9 @@ class SettingsopCRUDController extends CRUDController
         $runCode = $application->run($input, $output);
         $content = $output->fetch();
 
-        $this->addFlash('sonata_flash_success',$content);
+        $this->addFlash('info',$content);
 
-        return $this->redirectToRoute('admin_gekomod_settings_settings_list');
+        return $this->redirectToRoute('admin_gekomod_settings_list');
     }
     
     public function settingsUpdateAction() {

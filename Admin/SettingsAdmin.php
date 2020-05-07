@@ -13,6 +13,8 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\UrlGeneratorInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sonata\AdminBundle\Route\RouteCollection;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
   * Require ROLE_ADMIN for *every* controller method in this class.
@@ -21,64 +23,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
   */
 class SettingsAdmin extends AbstractAdmin
 {
+    
+    protected $baseRoutePattern = '/gekomod/settings';
+    protected $baseRouteName = 'admin_gekomod_settings';
 
-    protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    protected function configureRoutes(RouteCollection $collection)
     {
-        $admin = $this->isChild() ? $this->getParent() : $this;
-
-        $menu->addChild('Clear Cache', [
-            'uri' => '/admin/gekomod/settings/settings/cache'
-        ])->setAttribute('icon','fa fa-eraser');
-        $menu->addChild('Check Updates', [
-            'uri' => '/admin/gekomod/settings/settings/update'
-        ])->setAttribute('icon','glyphicon glyphicon-save');
+        $collection->clearExcept(['list']);
+        $collection->add('settings_cache','cache', [], [], [], '', ['HTTP'], ['GET']);
+        $collection->add('settings_update','update', [], [], [], '', ['HTTP'], ['GET']);
+        $collection->add('settings_save','save', [], [], [], '', ['HTTP'], ['POST']);
     }
 
-    protected function configureFormFields(FormMapper $formMapper)
-    {
-        $formMapper
-            ->add('name', null, array())
-            ->add('var', null, array('required' => false))
-            ->add('active', null, array())
-        ;
-    }
-
-    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
-    {
-        $datagridMapper
-            ->add('id', null, array())
-            ->add('name', null, array())
-            ->add('var', null, array())
-        ;
-    }
-
-    public function configureShowField(ShowMapper $showMapper){
-        $showMapper
-            ->add('id', null, array())
-            ->add('name', null, array())
-->add('var', null, array())
-            ->add('active', null, array())
-        ;
-    }
-
-    protected function configureListFields(ListMapper $listMapper)
-    {
-        $listMapper
-           ->addIdentifier('name', 'text')
-            ->add('var', null, [
-            'editable' => true
-        ])
-            ->add('id', null, array())
-	    ->add('active','boolean', [
-            'editable' => true
-        ])
-         ->add('_action', null, [
-            'actions' => [
-                'show' => [],
-                'edit' => [],
-                'delete' => [],
-            ]
-        ])
-        ;
-    }
 }

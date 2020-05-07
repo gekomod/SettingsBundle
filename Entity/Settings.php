@@ -3,6 +3,7 @@
 namespace Gekomod\SettingsBundle\Entity;
 
 use \Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass="Gekomod\SettingsBundle\Repository\SettingsRepository")
@@ -37,13 +38,18 @@ class Settings
      * @ORM\Version
      */
     protected $version;
+    
+    public function __construct()
+    {
+        $this->name = new ArrayCollection();
+    }
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName()
     {
         return $this->name;
     }
@@ -77,5 +83,15 @@ class Settings
         $this->active= $active;
 
         return $this;
+    }
+
+    public function addTag(Settings $name)
+    {
+        $this->name->add($name);
+    }
+
+    public function removeTag(Settings $name)
+    {
+        // ...
     }
 }

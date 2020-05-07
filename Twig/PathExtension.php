@@ -31,7 +31,7 @@ protected $themedir;
     public function updatePath(){
         $em = $this->doctrine->getManager();
         $myRepo = $em->getRepository(Settings::class);
-	$this->tt->addPath($this->themedir.'/templates/'.$myRepo->find(1)->getVar());
+	$this->tt->addPath($this->themedir.'/templates/'.$myRepo->findBy(["name" => 'template'])[0]->getVar());
         return true;
     }
  

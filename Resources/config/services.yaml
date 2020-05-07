@@ -1,12 +1,23 @@
 services:
+        
+    settings.command.installer:
+        class: Gekomod\SettingsBundle\Command\SettingsInstallerCommand
+        arguments: [ "@doctrine.orm.entity_manager" ]
+        tags:
+            - { name: 'console.command', command: 'settings:install' }
+
     admin.settings_new:
         class: Gekomod\SettingsBundle\Admin\SettingsAdmin
-        calls:
-            - [ setTemplate, [list, "@@Settings/settings.html.twig"]]
+        arguments:
+            - ~
+            - ~
+            - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
         tags:
             - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Ustawienia}
-        arguments: [~, Gekomod\SettingsBundle\Entity\Settings, ~]
-        public: true
+            
+    gekomod_settings.form.type.settings:
+        class: Gekomod\SettingsBundle\Form\SettingsType
+        arguments: ["@doctrine.orm.entity_manager"]
 
     myproject.twig.toolbox_extension:
         class: Gekomod\SettingsBundle\Twig\PathExtension
@@ -26,17 +37,7 @@ services:
         resource: '%kernel.project_dir%/vendor/gekomod/settings-bundle/Controller'
         autowire: true
         tags: ['controller.service_arguments']
-    admin.settingsop:
-        class: Gekomod\SettingsBundle\Admin\SettingsopAdmin
-        calls:
-            - [ setTemplate, [list, "@@SettingsBundle/cipa.html.twig"]]
-        tags:
-        - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Cache}
-        arguments:
-        - null
-        - null
-        - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
-        public: true
+
     kernel.listener.debug_listener:
         class: Gekomod\SettingsBundle\EventListener\DebugListener
         arguments:
