@@ -38,7 +38,7 @@ class SettingsopCRUDController extends CRUDController
                'Sonata Page' => $this->checkIsExists("sonata-project/page-bundle"),
                'Files Bundle' => $this->checkIsExists("gekomod/files-bundle"),
                'Settings Bundle' => $this->checkIsExists("gekomod/settings-bundle"),
-               'Seo BUndle' => $this->checkIsExists("sonata-project/media-bundle"),
+               'Seo Bundle' => $this->checkIsExists("sonata-project/media-bundle"),
             ];
 
         return $this->renderWithExtraParams('@Settings/admin/index.html.twig',['form' =>  $form->createView(), 'packages'=> $packages]);

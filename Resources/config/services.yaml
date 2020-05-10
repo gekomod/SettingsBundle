@@ -44,3 +44,10 @@ services:
             ["@service_container","@doctrine"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            
+    kernel.listener.seo_listener:
+        class: Gekomod\SettingsBundle\EventListener\SeoListener
+        arguments:
+            ["@service_container","@doctrine"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
