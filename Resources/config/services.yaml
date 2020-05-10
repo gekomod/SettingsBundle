@@ -44,4 +44,3 @@ services:
             ["@service_container","@doctrine"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-

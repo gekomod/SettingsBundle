@@ -12,7 +12,7 @@
 Ustawienia z poziomu Sonata Admin + Mysql - Każdą dodaną opcje do bazy można odczytać w Twig Oraz w Kontrolerze.
 
 Install Settings
-```a
+```
 php bin/console settings:install
 ```
 

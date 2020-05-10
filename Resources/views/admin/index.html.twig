@@ -20,20 +20,24 @@
 <a class="btn btn-app" href="{{ path('admin_gekomod_settings_settings_cache') }}">
                 <i class="fa fa-remove"></i> Clear Cache
 </a>
-<a class="btn btn-app">
+<a class="btn btn-app" href="{{ path('admin_gekomod_settings_settings_update') }}">
                 <i class="fa fa-cloud-download"></i> Check Update
 </a>
 <a class="btn btn-app">
                 <i class="fa fa-road"></i> Show Router's
 </a>
-
-<div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Settings Edit</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            {{ form_start(form, {'method': 'POST', 'attr': {'class': 'form-horizontal'}}) }}
+                
+                <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab_1" data-toggle="tab">Settings</a></li>
+              <li><a href="#tab_2" data-toggle="tab">Package Information</a></li>
+              <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
+              <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+               
+                    {{ form_start(form, {'method': 'POST', 'attr': {'class': 'form-horizontal'}}) }}
               <div class="box-body">
                   {{ form_errors(form) }}
     {% for single_frequency in form.name %}
@@ -61,6 +65,52 @@
               </div>
               <!-- /.box-footer -->
             </form>
-          </div>
-    
+                  
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2">
+                
+<div class="box-body no-padding">
+              <table class="table">
+                <tbody><tr>
+                  <th style="width: 250px">#</th>
+                  <th>{% trans %}descripion{% endtrans %}</th>
+                  <th style="width: 300px">{% trans %}version{% endtrans %}</th>
+                  <th>{% trans %}exists{% endtrans %}</th>
+                </tr>
+
+                  {% for key, package in packages %}
+                      {% set counter = ( counter | default(0) ) + 1 %}
+                  <script>
+                      $.get('{{ package.source|replace({'https://github.com/': 'https://api.github.com/repos/', '.git': "/"}) }}releases/latest', function (data) {
+                        $('#ver_{{ counter }}').html(data.tag_name);
+                      });
+                      </script>
+                      <tr>
+                  <td><a href="?name={{ package.name }}">{{ key }}</a></td>
+                  <td>{{ package.description }}</td>
+                  <td>{{ package.version }} - <div style="display: initial;" id="ver_{{ counter }}"></div></td>
+                  <td><span class="badge bg-green">{{ package.exists }}</span></td>
+                </tr>
+                  {% endfor %}
+ 
+                  
+                              </tbody></table>
+            </div>
+                
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_3">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                It has survived not only five centuries, but also the leap into electronic typesetting,
+                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
+                like Aldus PageMaker including versions of Lorem Ipsum.
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>    
 {% endblock %}
