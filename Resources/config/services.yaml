@@ -41,7 +41,7 @@ services:
     kernel.listener.debug_listener:
         class: Gekomod\SettingsBundle\EventListener\DebugListener
         arguments:
-            ["@service_container","@doctrine"]
+            ["@service_container","@doctrine","@twig.loader"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             

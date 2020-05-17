@@ -22,4 +22,5 @@ class SettingsExtension extends Extension
         $loader->load('services.yaml');
         $loader->load('twig.yaml');
 }
+
 }

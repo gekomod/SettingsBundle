@@ -8,14 +8,17 @@ use Twig_SimpleFunction;
 use Twig_Environment;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 
 class PathExtension extends \Twig_Extension
 {
     protected $doctrine;
-protected $container;
-protected $tt;
-protected $themedir;
+    protected $container;
+    protected $tt;
+    protected $themedir;
+    protected $filesystem;
     // Retrieve doctrine from the constructor
 
     public function __construct($doctrine,$container,$tt)
@@ -23,6 +26,7 @@ protected $themedir;
         $this->doctrine = $doctrine;
 	$this->container = $container;
 	$this->tt = $tt;
+        $this->filesystem = new Filesystem();
 
 	$this->themedir = $this->container->getParameter('kernel.project_dir');
 	$this->updatePath();
@@ -31,10 +35,19 @@ protected $themedir;
     public function updatePath(){
         $em = $this->doctrine->getManager();
         $myRepo = $em->getRepository(Settings::class);
-	$this->tt->addPath($this->themedir.'/templates/'.$myRepo->findBy(["name" => 'template'])[0]->getVar());
+        $dir = $this->themedir.'/templates/'.$myRepo->findBy(["name" => 'template'])[0]->getVar();
+        $this->checkDir($dir);
+        $loader = new \Twig\Loader\FilesystemLoader($dir);
         return true;
     }
  
+    public function checkDir($dir) {
+        if(!$this->filesystem->exists($dir)) {
+            $this->filesystem->mkdir($dir);
+            $this->filesystem->chmod($dir, 0755, 0000, true);
+            throw new \Exception('Folder Not Found - Created - Please Refresh Page');
+        }
+    }
 
     public function getFilters()
     {

@@ -39,12 +39,14 @@ class SeoListener
             //NOT LOAD SEO
         } else {
             $seoPage->setTitle($this->getInfo('seo_title')->getVar());
+            $seoPage->addMeta('property', 'og:title', $this->getInfo('seo_title')->getVar());
         }
         
         if($this->getInfo('seo_description')->getVar() == null) {
             //NOT LOAD SEO
         } else {
             $seoPage->addMeta('name', 'description', $this->getInfo('seo_description')->getVar());
+            $seoPage->addMeta('property', 'og:type', 'CMS');
         }
     }
 }
