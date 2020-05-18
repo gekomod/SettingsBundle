@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-
 class PathExtension extends \Twig_Extension
 {
     protected $doctrine;
@@ -27,7 +26,7 @@ class PathExtension extends \Twig_Extension
 	$this->container = $container;
 	$this->tt = $tt;
         $this->filesystem = new Filesystem();
-
+        
 	$this->themedir = $this->container->getParameter('kernel.project_dir');
 	$this->updatePath();
     }

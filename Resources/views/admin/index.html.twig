@@ -1,9 +1,10 @@
 {# templates/admin/custom_view.html.twig #}
 
 {% extends '@SonataAdmin/standard_layout.html.twig' %}
+{% trans_default_domain 'SettingsBundle' %} 
 
-{% block breadcrumb %} <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}Home{% endtrans %}</a></li> 
-    <li class="active">Settings</li> 
+{% block breadcrumb %} <li><a href="{{ url('sonata_admin_dashboard') }}">{% trans %}settings.Home{% endtrans %}</a></li> 
+    <li class="active">{% trans %}settings.page{% endtrans %}</li> 
 {% endblock %}
 
 {% block sonata_admin_content %}
@@ -18,10 +19,10 @@
 {% endif %}
     
 <a class="btn btn-app" href="{{ path('admin_gekomod_settings_settings_cache') }}">
-                <i class="fa fa-remove"></i> Clear Cache
+                <i class="fa fa-remove"></i> {% trans %}settings.cache{% endtrans %}
 </a>
 <a class="btn btn-app" href="{{ path('admin_gekomod_settings_settings_update') }}">
-                <i class="fa fa-cloud-download"></i> Check Update
+                <i class="fa fa-cloud-download"></i> {% trans %}settings.update{% endtrans %}
 </a>
 <a class="btn btn-app">
                 <i class="fa fa-road"></i> Show Router's
@@ -29,8 +30,8 @@
                 
                 <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab">Settings</a></li>
-              <li><a href="#tab_2" data-toggle="tab">Package Information</a></li>
+              <li class="active"><a href="#tab_1" data-toggle="tab">{% trans %}settings.settings{% endtrans %}</a></li>
+              <li><a href="#tab_2" data-toggle="tab">{% trans %}settings.info{% endtrans %}</a></li>
               <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
               <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
             </ul>
@@ -60,8 +61,8 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Save</button>
+                <button type="submit" class="btn btn-default">{% trans %}settings.cancel{% endtrans %}</button>
+                <button type="submit" class="btn btn-info pull-right">{% trans %}settings.save{% endtrans %}</button>
               </div>
               <!-- /.box-footer -->
             </form>
@@ -69,14 +70,14 @@
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
-                
+    
 <div class="box-body no-padding">
               <table class="table">
                 <tbody><tr>
                   <th style="width: 250px">#</th>
-                  <th>{% trans %}descripion{% endtrans %}</th>
-                  <th style="width: 300px">{% trans %}version{% endtrans %}</th>
-                  <th>{% trans %}exists{% endtrans %}</th>
+                  <th>{% trans %}settings.descripion{% endtrans %}</th>
+                  <th style="width: 300px">{% trans %}settings.version{% endtrans %}</th>
+                  <th>{% trans %}settings.exists{% endtrans %}</th>
                 </tr>
 
                   {% for key, package in packages %}

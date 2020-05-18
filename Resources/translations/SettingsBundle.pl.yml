@@ -1,0 +1,13 @@
+settings:
+    error: 'DUPA'
+    exists: 'Zainstalowane ?'
+    version: 'Wersja'
+    descripion: 'Opis'
+    save: 'Zapisz Ustawienia'
+    cancel: 'Anuluj'
+    settings: 'Ustawienia'
+    info: 'Informacje o Pakietach'
+    cache: 'Wyczyść Cache'
+    update: 'Sprawdz Aktualizacje'
+    Home: 'Strona Główna'
+    page: 'Ustawienia'
