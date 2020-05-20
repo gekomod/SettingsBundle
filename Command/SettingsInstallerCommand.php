@@ -91,7 +91,7 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
 
         
 
-        $success = $this->install($this->createOptions($input, $output));
+        $success = $this->install();
 
         if ($success) {
             $this->success('Settings Bundle has been successfully installed...', $output);
@@ -104,13 +104,6 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
     public function install()
     {
         return true;
-    }
-
-    private function createOptions(InputInterface $input, OutputInterface $output): array
-    {
-        $options = ['notifier' => 'ok'];
-
-        return array_filter($options);
     }
 
     private function title(OutputInterface $output): void
