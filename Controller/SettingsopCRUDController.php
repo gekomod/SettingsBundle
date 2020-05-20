@@ -21,8 +21,6 @@ class SettingsopCRUDController extends CRUDController
 
     public function listAction()
     {
-    $entityManager = $this->getDoctrine()->getManager();
-
     $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
     $rows_settings = $repository->findAll();
 
@@ -124,28 +122,21 @@ class SettingsopCRUDController extends CRUDController
             '--no-warmup' => true
         ]);
         $output = new BufferedOutput();
-        $runCode = $application->run($input, $output);
+        $application->run($input, $output);
         $content = $output->fetch();
-
+        
         $this->addFlash('info',$content);
 
         return $this->redirectToRoute('admin_gekomod_settings_list');
     }
     
     public function settingsUpdateAction() {
-        $client = HttpClient::create();
-        $response = $client->request('GET', 'https://api.github.com/repos/gekomod/SettingsBundle/tags');
+        $response = HttpClient::create()->request('GET', 'https://api.github.com/repos/gekomod/SettingsBundle/tags');
 
         $statusCode = $response->getStatusCode();
-        // $statusCode = 200
-        $contentType = $response->getHeaders()['content-type'][0];
-        // $contentType = 'application/json'
+        $response->getHeaders()['content-type'][0];
         $content = $response->getContent();
-        // $content = '{"id":521583, "name":"symfony-docs", ...}'
-        // $content = ['id' => 521583, 'name' => 'symfony-docs', ...]
-        $response = new Response($content, $statusCode);
-        echo '<pre>';
-        print_r($content[0]); 
+        $response = new Response($content[0], $statusCode);
 
         return $response;
     }
