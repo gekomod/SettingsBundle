@@ -55,10 +55,37 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
         $settings->setName('template');
         $settings->setVar('default');
         $settings->setActive(1);
-
         $entityManager->persist($settings);
-        
         $entityManager->flush();
+        
+        $settings = new Settings();
+        $settings->setName('debug');
+        $settings->setVar('true');
+        $settings->setActive(1);
+        $entityManager->persist($settings);
+        $entityManager->flush();
+        
+        $settings = new Settings();
+        $settings->setName('seo_title');
+        $settings->setVar('Your Site title');
+        $settings->setActive(1);
+        $entityManager->persist($settings);
+        $entityManager->flush();
+        
+        $settings = new Settings();
+        $settings->setName('seo_meta');
+        $settings->setVar('Site Meta Data');
+        $settings->setActive(1);
+        $entityManager->persist($settings);
+        $entityManager->flush();
+        
+        $settings = new Settings();
+        $settings->setName('seo_description');
+        $settings->setVar('Description');
+        $settings->setActive(1);
+        $entityManager->persist($settings);
+        $entityManager->flush();
+
         }
 
         
@@ -67,9 +94,8 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
 
         if ($success) {
             $this->success('Settings Bundle has been successfully installed...', $output);
-        } else {
+        } 
             $this->info('Settings Bundle installation has been skipped...', $output);
-        }
 
         return 0;
     }

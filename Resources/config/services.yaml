@@ -23,16 +23,18 @@ services:
         class: Gekomod\SettingsBundle\Twig\PathExtension
         # Inject doctrine as first parameter
         arguments:
-          ["@doctrine","@service_container","@twig.loader.filesystem"]
+          ["@doctrine","@service_container","@twig.loader.filesystem", "@settings.new"]
         tags:
           -  { name: twig.extension }
 
     settings.new:
         class: Gekomod\SettingsBundle\Service\Settings_Get
         arguments:
-          ["@doctrine"]
+          - "@doctrine.orm.entity_manager"
         public: true
+        
     _defaults: { public: false, autowire: true, autoconfigure: true }
+    
     Gekomod\SettingsBundle\Controller\:
         resource: '%kernel.project_dir%/vendor/gekomod/settings-bundle/Controller'
         autowire: true

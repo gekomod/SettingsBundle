@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Gekomod\SettingsBundle\Service\Settings_Get;
 
 class PathExtension extends \Twig_Extension
 {
@@ -18,23 +19,24 @@ class PathExtension extends \Twig_Extension
     protected $tt;
     protected $themedir;
     protected $filesystem;
+    /** @var Settings */
+    private $settings;
     // Retrieve doctrine from the constructor
 
-    public function __construct($doctrine,$container,$tt)
+    public function __construct($doctrine,$container,$tt,Settings_Get $setting)
     {
         $this->doctrine = $doctrine;
 	$this->container = $container;
 	$this->tt = $tt;
         $this->filesystem = new Filesystem();
+        $this->settings = $setting;
         
 	$this->themedir = $this->container->getParameter('kernel.project_dir');
 	$this->updatePath();
     }
 
     public function updatePath(){
-        $em = $this->doctrine->getManager();
-        $myRepo = $em->getRepository(Settings::class);
-        $dir = $this->themedir.'/templates/'.$myRepo->findBy(["name" => 'template'])[0]->getVar();
+        $dir = $this->themedir.'/templates/'.$this->settings->get('template', '');
         $this->checkDir($dir);
         $loader = new \Twig\Loader\FilesystemLoader($dir);
         return true;
@@ -51,15 +53,13 @@ class PathExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('settings_get', array($this, 'getSettings'))
+            new \Twig_SimpleFunction('settings', array($this, 'getSettings')),
         );
     }
-
-    public function getSettings($opcje)
+    
+    public function getSettings($name, $subname = null)
     {
-	$em = $this->doctrine->getManager();
-        $myRepo = $em->getRepository(Settings::class);
-        return $myRepo->findBy(["name" => $opcje])[0]->getVar();
+        return $this->settings->get($name, $subname);
     }
 
 }
