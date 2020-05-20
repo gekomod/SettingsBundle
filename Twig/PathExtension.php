@@ -16,18 +16,18 @@ class PathExtension extends \Twig_Extension
 {
     protected $doctrine;
     protected $container;
-    protected $tt;
+    protected $tts;
     protected $themedir;
     protected $filesystem;
     /** @var Settings */
     private $settings;
     // Retrieve doctrine from the constructor
 
-    public function __construct($doctrine,$container,$tt,Settings_Get $setting)
+    public function __construct($doctrine,$container,$tts,Settings_Get $setting)
     {
         $this->doctrine = $doctrine;
 	$this->container = $container;
-	$this->tt = $tt;
+	$this->tts = $tts;
         $this->filesystem = new Filesystem();
         $this->settings = $setting;
         
@@ -38,7 +38,7 @@ class PathExtension extends \Twig_Extension
     public function updatePath(){
         $dir = $this->themedir.'/templates/'.$this->settings->get('template', '');
         $this->checkDir($dir);
-        $loader = new \Twig\Loader\FilesystemLoader($dir);
+        new \Twig\Loader\FilesystemLoader($dir);
         return true;
     }
  
