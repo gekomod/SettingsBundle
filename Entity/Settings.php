@@ -89,9 +89,4 @@ class Settings
     {
         $this->name->add($name);
     }
-
-    public function removeTag(Settings $name)
-    {
-        // ...
-    }
 }
