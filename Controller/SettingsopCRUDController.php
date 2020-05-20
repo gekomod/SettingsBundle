@@ -54,14 +54,12 @@ class SettingsopCRUDController extends CRUDController
         $arrBundles = $this->getPackages();
         if (!array_key_exists($name, $arrBundles))
         {
-            // bundle not found
             $info = ['name' => $name,'exists' => 'Not Found'];
             return $info;
-        } else {
+        }
             $arr = $arrBundles[$name];
             $info = ['name' => $arr['name'],'exists' => 'Installed','version' => $arr['version'], 'description' => $arr['description'], 'source' => $arr['source']['url']];
             return $info;
-        }
     }
     
        private function getPackages()
