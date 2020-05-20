@@ -15,10 +15,18 @@ use Symfony\Component\HttpClient\HttpClient;
 use \Gekomod\SettingsBundle\Form\SettingsType;
 use \Gekomod\SettingsBundle\Form\SettingsFormType;
 use \Gekomod\SettingsBundle\Entity\Settings;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SettingsopCRUDController extends CRUDController
 {
 
+    protected $filesystem;
+    
+    public function __construct()
+    {
+        $this->filesystem = new Filesystem();
+    }
+    
     public function listAction()
     {
     $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
@@ -61,7 +69,7 @@ class SettingsopCRUDController extends CRUDController
         $packages = array();
 
         $composerLockPath = $this->get('kernel')->getRootDir().'/../composer.lock';
-        if (!file_exists($composerLockPath)) {
+        if (!$this->filesystem->exists($composerLockPath)) {
             return $packages;
         }
 
