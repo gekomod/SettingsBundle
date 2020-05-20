@@ -41,7 +41,8 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
         $connected = $ems->getConnection()->isConnected();
         
 
-        if ($connected) { $this->info('You Are Not Connected To DataBase Exit from Installation',$output); return false;  } else { $this->success('You Are Connected To Database',$output); }
+        if ($connected) { $this->info('You Are Not Connected To DataBase Exit from Installation',$output); return false;  }
+        $this->success('You Are Connected To Database',$output);
         
 
 
@@ -105,11 +106,6 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
         return true;
     }
 
-private function test($text,$output): Symfony\Component\Console\Output\OutputInterface
-{
-  $this->info($text,$output);
-}
-
     private function createOptions(InputInterface $input, OutputInterface $output): array
     {
         $options = ['notifier' => 'ok'];
@@ -127,12 +123,6 @@ private function test($text,$output): Symfony\Component\Console\Output\OutputInt
                 '',
             ]
         );
-    }
-
-    private function comment(string $message, OutputInterface $output): void
-    {
-        $output->writeln(' // '.$message);
-        $output->writeln('');
     }
 
     private function success(string $message, OutputInterface $output): void
