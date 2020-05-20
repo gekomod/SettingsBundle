@@ -26,7 +26,7 @@ class SettingsopCRUDController extends CRUDController
 
     $Settings = new Settings();
 
-    foreach ($rows_settings as $k => $v) {
+    foreach ($rows_settings as $v) {
         $Settings->getName()->add($v);
     }
     
