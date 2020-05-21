@@ -47,16 +47,10 @@ class Settings_Get
      */
     public function get($name, $subname = null, $default = null)
     {
-        if ($subname) {
-            return $default;
-        } else {
             if (!isset($this->settings[$name])) {
                 $this->settings[$name] = $this->load($name);
             }
-            return $this->settings[$name];
-        }
-
-        return $default;
+            return $this->settings[$name] ?: $default;
     }
 }
 
