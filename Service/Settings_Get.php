@@ -41,11 +41,10 @@ class Settings_Get
      * Get one setting
      *
      * @param string $name Setting name or group name (if $subname is set)
-     * @param string|null $subname Setting name (use with $name as group name)
      * @param mixed|null $default The default value if the setting key does not exist
      * @return mixed
      */
-    public function get($name, $subname = null, $default = null)
+    public function get($name, $default = null)
     {
             if (!isset($this->settings[$name])) {
                 $this->settings[$name] = $this->load($name);
