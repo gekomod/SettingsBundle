@@ -92,6 +92,7 @@ install:
 script:
   - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then php vendor/bin/php-cs-fixer --no-interaction --dry-run --diff -v fix; fi;
   - if [[ "$CHECK_PHP_SYNTAX" == "yes" ]]; then mv ./.php_cs.cache $HOME/.app/cache/.php_cs.cache 2> /dev/null; fi;
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
 
 after_success:
     - php: 7.2
@@ -106,6 +107,7 @@ after_success:
     - php: 7.0
       env: SYMFONY_VERSION="3.1.*"
     # common (some popular version combinations)
+    - bash <(curl -s https://codecov.io/bash)
 
 #    # code coverage is very slow; allow a failure to get the Travis result early
 #    - env:
