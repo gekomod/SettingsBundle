@@ -2,67 +2,68 @@
 
 namespace Gekomod\SettingsBundle\Controller;
 
+use Gekomod\SettingsBundle\Entity\Settings;
+use Gekomod\SettingsBundle\Form\SettingsFormType;
 use Sonata\AdminBundle\Controller\CRUDController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpClient\HttpClient;
-use \Gekomod\SettingsBundle\Form\SettingsFormType;
-use \Gekomod\SettingsBundle\Entity\Settings;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SettingsopCRUDController extends CRUDController
 {
-
     protected $filesystem;
-    
+
     public function __construct()
     {
         $this->filesystem = new Filesystem();
     }
-    
+
     public function listAction()
     {
-    $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
-    $rows_settings = $repository->findAll();
+        $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
+        $rows_settings = $repository->findAll();
 
-    $Settings = new Settings();
-    $link = [];
-    
-    foreach ($rows_settings as $v) {
-        $Settings->getName()->add($v);
-        $link[$v->name] = $v->id;
-    }
-    
-    $form = $this->createForm( SettingsFormType::class, $Settings,['action' => $this->generateUrl('admin_gekomod_settings_settings_save'),
-                'method' => 'POST']);
-    $packages=[
-               'Sonata Page' => $this->checkIsExists("sonata-project/page-bundle"),
-               'Files Bundle' => $this->checkIsExists("gekomod/files-bundle"),
-               'Settings Bundle' => $this->checkIsExists("gekomod/settings-bundle"),
-               'Seo Bundle' => $this->checkIsExists("sonata-project/media-bundle"),
-            ];
+        $Settings = new Settings();
+        $link = [];
 
-        return $this->renderWithExtraParams('@Settings/admin/index.html.twig',['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link]);
+        foreach ($rows_settings as $v) {
+            $Settings->getName()->add($v);
+            $link[$v->name] = $v->id;
+        }
+
+        $form = $this->createForm(SettingsFormType::class, $Settings, ['action' => $this->generateUrl('admin_gekomod_settings_settings_save'),
+            'method'                                                            => 'POST', ]);
+        $packages = [
+            'Sonata Page'     => $this->checkIsExists('sonata-project/page-bundle'),
+            'Files Bundle'    => $this->checkIsExists('gekomod/files-bundle'),
+            'Settings Bundle' => $this->checkIsExists('gekomod/settings-bundle'),
+            'Seo Bundle'      => $this->checkIsExists('sonata-project/media-bundle'),
+        ];
+
+        return $this->renderWithExtraParams('@Settings/admin/index.html.twig', ['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link]);
     }
-    
-    public function checkIsExists($name) {
+
+    public function checkIsExists($name)
+    {
         $arrBundles = $this->getPackages();
-        if (!array_key_exists($name, $arrBundles))
-        {
-            $info = ['name' => $name,'exists' => 'Not Found'];
+        if (!array_key_exists($name, $arrBundles)) {
+            $info = ['name' => $name, 'exists' => 'Not Found'];
+
             return $info;
         }
-            $arr = $arrBundles[$name];
-            $info = ['name' => $arr['name'],'exists' => 'Installed','version' => $arr['version'], 'description' => $arr['description'], 'source' => $arr['source']['url']];
-            return $info;
+        $arr = $arrBundles[$name];
+        $info = ['name' => $arr['name'], 'exists' => 'Installed', 'version' => $arr['version'], 'description' => $arr['description'], 'source' => $arr['source']['url']];
+
+        return $info;
     }
-    
-       private function getPackages()
+
+    private function getPackages()
     {
-        $packages = array();
+        $packages = [];
 
         $composerLockPath = $this->get('kernel')->getRootDir().'/../composer.lock';
         if (!$this->filesystem->exists($composerLockPath)) {
@@ -77,14 +78,14 @@ class SettingsopCRUDController extends CRUDController
 
         return $allPackages;
     }
-    
+
     private function processComposerPackagesInformation($composerPackages, $isDev = false)
     {
-        $packages = array();
+        $packages = [];
         foreach ($composerPackages as $packageConfig) {
-            $package = array();
+            $package = [];
             $package['is_dev'] = $isDev;
-            foreach (array('name', 'description', 'keywords', 'authors', 'version', 'license', 'homepage', 'type', 'source', 'bin', 'autoload', 'time') as $key) {
+            foreach (['name', 'description', 'keywords', 'authors', 'version', 'license', 'homepage', 'type', 'source', 'bin', 'autoload', 'time'] as $key) {
                 $package[$key] = isset($packageConfig[$key]) ? $packageConfig[$key] : '';
             }
 
@@ -93,13 +94,13 @@ class SettingsopCRUDController extends CRUDController
 
         return $packages;
     }
-    
-    public function settingsSaveAction(Request $request) {
 
+    public function settingsSaveAction(Request $request)
+    {
         $get_all = $request->request->get('settings_form');
 
-        foreach($get_all['name'] as $a) {
-            $em = $this->getDoctrine()->getManager();     
+        foreach ($get_all['name'] as $a) {
+            $em = $this->getDoctrine()->getManager();
             $query = $em->getRepository(Settings::class)->createQueryBuilder('')
             ->update(Settings::class, 'u')
             ->set('u.var', ':var')
@@ -115,26 +116,27 @@ class SettingsopCRUDController extends CRUDController
 
         return $this->redirectToRoute('admin_gekomod_settings_list');
     }
-    
+
     public function settingsCacheAction()
     {
         $application = new Application($this->get('kernel'));
-        $application->setAutoExit(false);//exit after run
+        $application->setAutoExit(false); //exit after run
         $input = new ArrayInput([
-            'command' => 'cache:clear',
-            '--env'   => 'dev',
-            '--no-warmup' => true
+            'command'     => 'cache:clear',
+            '--env'       => 'dev',
+            '--no-warmup' => true,
         ]);
         $output = new BufferedOutput();
         $application->run($input, $output);
         $content = $output->fetch();
-        
-        $this->addFlash('info',$content);
+
+        $this->addFlash('info', $content);
 
         return $this->redirectToRoute('admin_gekomod_settings_list');
     }
-    
-    public function settingsUpdateAction() {
+
+    public function settingsUpdateAction()
+    {
         $response = HttpClient::create()->request('GET', 'https://api.github.com/repos/gekomod/SettingsBundle/tags');
 
         $statusCode = $response->getStatusCode();
@@ -144,5 +146,4 @@ class SettingsopCRUDController extends CRUDController
 
         return $response;
     }
-
 }

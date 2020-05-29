@@ -2,8 +2,8 @@
 
 namespace Gekomod\SettingsBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="Gekomod\SettingsBundle\Repository\SettingsRepository")
@@ -12,7 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Settings
 {
     /**
-     * @var integer
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -39,22 +39,22 @@ class Settings
      * @ORM\Version
      */
     protected $version;
-    
+
     public function __construct()
     {
         $this->name = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
-    
+
     public function setId(int $id): self
     {
         $this->id = $id;
@@ -93,11 +93,11 @@ class Settings
 
     public function setActive(string $active): self
     {
-        $this->active= $active;
+        $this->active = $active;
 
         return $this;
     }
-    
+
     public function getVersion(): ?int
     {
         return $this->version;
@@ -105,14 +105,13 @@ class Settings
 
     public function setVersion(int $version): self
     {
-        $this->version= $version;
+        $this->version = $version;
 
         return $this;
     }
 
-    public function addTag(Settings $name)
+    public function addTag(self $name)
     {
         $this->name->add($name);
     }
-    
 }
