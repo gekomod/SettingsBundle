@@ -3,16 +3,10 @@
 namespace Gekomod\SettingsBundle\Command;
 
 use Gekomod\SettingsBundle\Entity\Settings;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @author zaba <zaba141@o2.pl>
@@ -20,10 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 //final class SettingsInstallerCommand extends Command
 final class SettingsInstallerCommand extends ContainerAwareCommand
 {
-
     public function __construct()
     {
-       parent::__construct();
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -37,66 +30,64 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
     {
         $this->title($output);
 
-        $ems     = $this->getContainer()->get('doctrine');
+        $ems = $this->getContainer()->get('doctrine');
         $connected = $ems->getConnection()->isConnected();
-        
 
-        if ($connected) { $this->info('You Are Not Connected To DataBase Exit from Installation',$output); return false;  }
-        $this->success('You Are Connected To Database',$output);
-        
+        if ($connected) {
+            $this->info('You Are Not Connected To DataBase Exit from Installation', $output);
 
+            return false;
+        }
+        $this->success('You Are Connected To Database', $output);
 
         $entityManager = $ems->getManager();
         $repository = $ems->getRepository(Settings::class);
 
         $template = $repository->findOneByName('template');
 
-        if(!$template) {
-        $settings = new Settings();
-        $settings->setName('template');
-        $settings->setVar('default');
-        $settings->setActive(1);
-        $entityManager->persist($settings);
-        $entityManager->flush();
-        
-        $settings = new Settings();
-        $settings->setName('debug');
-        $settings->setVar('true');
-        $settings->setActive(1);
-        $entityManager->persist($settings);
-        $entityManager->flush();
-        
-        $settings = new Settings();
-        $settings->setName('seo_title');
-        $settings->setVar('Your Site title');
-        $settings->setActive(1);
-        $entityManager->persist($settings);
-        $entityManager->flush();
-        
-        $settings = new Settings();
-        $settings->setName('seo_meta');
-        $settings->setVar('Site Meta Data');
-        $settings->setActive(1);
-        $entityManager->persist($settings);
-        $entityManager->flush();
-        
-        $settings = new Settings();
-        $settings->setName('seo_description');
-        $settings->setVar('Description');
-        $settings->setActive(1);
-        $entityManager->persist($settings);
-        $entityManager->flush();
+        if (!$template) {
+            $settings = new Settings();
+            $settings->setName('template');
+            $settings->setVar('default');
+            $settings->setActive(1);
+            $entityManager->persist($settings);
+            $entityManager->flush();
 
+            $settings = new Settings();
+            $settings->setName('debug');
+            $settings->setVar('true');
+            $settings->setActive(1);
+            $entityManager->persist($settings);
+            $entityManager->flush();
+
+            $settings = new Settings();
+            $settings->setName('seo_title');
+            $settings->setVar('Your Site title');
+            $settings->setActive(1);
+            $entityManager->persist($settings);
+            $entityManager->flush();
+
+            $settings = new Settings();
+            $settings->setName('seo_meta');
+            $settings->setVar('Site Meta Data');
+            $settings->setActive(1);
+            $entityManager->persist($settings);
+            $entityManager->flush();
+
+            $settings = new Settings();
+            $settings->setName('seo_description');
+            $settings->setVar('Description');
+            $settings->setActive(1);
+            $entityManager->persist($settings);
+            $entityManager->flush();
         }
-
-        
 
         $success = $this->install();
 
         if ($success) {
             $this->success('Settings Bundle has been successfully installed...', $output);
-        } 
-            $this->info('Settings Bundle installation has been skipped...', $output);
+        }
+        $this->info('Settings Bundle installation has been skipped...', $output);
 
         return 0;
     }
