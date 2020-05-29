@@ -12,16 +12,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Settings
 {
     /**
+     * @var integer
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    public $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,9 +45,21 @@ class Settings
         $this->name = new ArrayCollection();
     }
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName()
@@ -54,7 +67,7 @@ class Settings
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name)
     {
         $this->name = $name;
 
@@ -84,9 +97,22 @@ class Settings
 
         return $this;
     }
+    
+    public function getVersion(): ?int
+    {
+        return $this->version;
+    }
+
+    public function setVersion(int $version): self
+    {
+        $this->version= $version;
+
+        return $this;
+    }
 
     public function addTag(Settings $name)
     {
         $this->name->add($name);
     }
+    
 }

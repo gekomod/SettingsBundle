@@ -2,17 +2,13 @@
 
 namespace Gekomod\SettingsBundle\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Annotation\RouteCollection;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpClient\HttpClient;
-use \Gekomod\SettingsBundle\Form\SettingsType;
 use \Gekomod\SettingsBundle\Form\SettingsFormType;
 use \Gekomod\SettingsBundle\Entity\Settings;
 use Symfony\Component\Filesystem\Filesystem;
@@ -33,13 +29,15 @@ class SettingsopCRUDController extends CRUDController
     $rows_settings = $repository->findAll();
 
     $Settings = new Settings();
-
+    $link = [];
+    
     foreach ($rows_settings as $v) {
         $Settings->getName()->add($v);
+        $link[$v->name] = $v->id;
     }
     
     $form = $this->createForm( SettingsFormType::class, $Settings,['action' => $this->generateUrl('admin_gekomod_settings_settings_save'),
-                'method' => 'POST',]);
+                'method' => 'POST']);
     $packages=[
                'Sonata Page' => $this->checkIsExists("sonata-project/page-bundle"),
                'Files Bundle' => $this->checkIsExists("gekomod/files-bundle"),
@@ -47,7 +45,7 @@ class SettingsopCRUDController extends CRUDController
                'Seo Bundle' => $this->checkIsExists("sonata-project/media-bundle"),
             ];
 
-        return $this->renderWithExtraParams('@Settings/admin/index.html.twig',['form' =>  $form->createView(), 'packages'=> $packages]);
+        return $this->renderWithExtraParams('@Settings/admin/index.html.twig',['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link]);
     }
     
     public function checkIsExists($name) {

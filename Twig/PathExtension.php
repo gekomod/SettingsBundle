@@ -49,6 +49,17 @@ class PathExtension extends \Twig_Extension
             throw new \Exception('Folder Not Found - Created - Please Refresh Page');
         }
     }
+    
+        public function getFunctions()
+    {
+    	return array(
+    		new Twig_SimpleFunction('file_get_contents', 'file_get_contents', array('is_safe' => array('html'))),
+		    new Twig_SimpleFunction('uniqid', 'uniqid'),
+		    new Twig_SimpleFunction('print_r', 'print_r'),
+                new Twig_SimpleFunction('var_dump', 'var_dump'),
+		);
+    }
+
 
     public function getFilters()
     {

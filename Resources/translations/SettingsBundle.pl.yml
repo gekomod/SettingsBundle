@@ -11,3 +11,5 @@ settings:
     update: 'Sprawdz Aktualizacje'
     Home: 'Strona Główna'
     page: 'Ustawienia'
+    create: 'Dodaj Ustawienia'
+    delete: 'Skasuj Wpis'

@@ -9,18 +9,17 @@ use Doctrine\ORM\EntityManager;
 class Settings_Get
 {
     /** @var EntityManager */
-    private $em;
+    private $ems;
     
     /** @var SettingsRepository */
     private $repository;
 
     private $settings = array();
-    private $groups = array();
     
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $ems)
     {
-        $this->em = $em;
-        $this->repository = $em->getRepository('Gekomod\SettingsBundle\Entity\Settings');
+        $this->ems = $ems;
+        $this->repository = $ems->getRepository('Gekomod\SettingsBundle\Entity\Settings');
     }
 
     private function fetch($name)
@@ -42,25 +41,15 @@ class Settings_Get
      * Get one setting
      *
      * @param string $name Setting name or group name (if $subname is set)
-     * @param string|null $subname Setting name (use with $name as group name)
      * @param mixed|null $default The default value if the setting key does not exist
      * @return mixed
      */
-    public function get($name, $subname = null, $default = null)
+    public function get($name, $default = null)
     {
-        if ($subname) {
-            $group = $this->group($name);
-            if (isset($group[$subname])) {
-                return $group[$subname];
-            }
-        } else {
             if (!isset($this->settings[$name])) {
                 $this->settings[$name] = $this->load($name);
             }
-            return $this->settings[$name];
-        }
-
-        return $default;
+            return $this->settings[$name] ?: $default;
     }
 }
 

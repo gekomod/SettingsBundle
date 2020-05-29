@@ -10,7 +10,7 @@ services:
         class: Gekomod\SettingsBundle\Admin\SettingsAdmin
         arguments:
             - ~
-            - ~
+            - Gekomod\SettingsBundle\Entity\Settings
             - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
         tags:
             - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Ustawienia}
