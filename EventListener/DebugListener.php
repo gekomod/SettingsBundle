@@ -24,7 +24,7 @@ class DebugListener
     }
 
     public function onKernelController(FilterControllerEvent $event)
-    {
+    {   
         $em = $this->container->get('doctrine')->getManager();
         $myRepo = $em->getRepository(Settings::class);
         $op = $myRepo->findBy(['name' => 'debug']);

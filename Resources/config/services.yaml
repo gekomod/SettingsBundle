@@ -19,7 +19,7 @@ services:
         class: Gekomod\SettingsBundle\Form\SettingsType
         arguments: ["@doctrine.orm.entity_manager"]
 
-    myproject.twig.toolbox_extension:
+    settings.twig.toolbox_extension:
         class: Gekomod\SettingsBundle\Twig\PathExtension
         # Inject doctrine as first parameter
         arguments:

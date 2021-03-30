@@ -6,6 +6,7 @@ use Gekomod\SettingsBundle\Entity\Settings;
 use Gekomod\SettingsBundle\Service\Settings_Get;
 use Symfony\Component\Filesystem\Filesystem;
 use Twig_SimpleFunction;
+use Twig\Environment;
 
 class PathExtension extends \Twig_Extension
 {
@@ -19,24 +20,25 @@ class PathExtension extends \Twig_Extension
     // Retrieve doctrine from the constructor
 
     public function __construct($doctrine, $container, $tts, Settings_Get $setting)
-    {
+    {        
         $this->doctrine = $doctrine;
         $this->container = $container;
-        $this->tts = $tts;
-        $this->filesystem = new Filesystem();
         $this->settings = $setting;
-
         $this->themedir = $this->container->getParameter('kernel.project_dir');
+        $this->filesystem = new Filesystem();
         $this->updatePath();
+        $this->tts = $tts;
     }
 
     public function updatePath()
     {
         $dir = $this->themedir.'/templates/'.$this->settings->get('template', '');
+        
         $this->checkDir($dir);
+        
         new \Twig\Loader\FilesystemLoader($dir);
-
         return true;
+
     }
 
     public function checkDir($dir)
@@ -47,6 +49,7 @@ class PathExtension extends \Twig_Extension
 
             throw new \Exception('Folder Not Found - Created - Please Refresh Page');
         }
+        return true;
     }
 
     public function getFunctions()

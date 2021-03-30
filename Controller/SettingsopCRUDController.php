@@ -44,7 +44,15 @@ class SettingsopCRUDController extends CRUDController
             'Seo Bundle'      => $this->checkIsExists('sonata-project/media-bundle'),
         ];
 
-        return $this->renderWithExtraParams('@Settings/admin/index.html.twig', ['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link]);
+        if(extension_loaded('apcu'))
+        {
+          $apcu = "APCU enabled!";
+          if (ini_get('apcu.enable_cli') != '1');
+        } else {
+            $apcu = "APCU NOT INSTALLED";
+        }
+        
+        return $this->renderWithExtraParams('@Settings/admin/index.html.twig', ['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link, 'apcu' => $apcu]);
     }
 
     public function checkIsExists($name)
@@ -116,6 +124,27 @@ class SettingsopCRUDController extends CRUDController
 
         return $this->redirectToRoute('admin_gekomod_settings_list');
     }
+    
+    public function settingsApcuCacheAction()
+    {
+        if (extension_loaded('apcu')) {
+            echo "APCu cache: " . apcu_clear_cache() . "\n";
+            $this->addFlash('info', 'APCU Cache Removed');
+
+        return $this->redirectToRoute('admin_gekomod_settings_list');
+        }
+
+        if (function_exists('opcache_reset')) {
+            // Clear it twice to avoid some internal issues...
+            opcache_reset();
+            opcache_reset();
+            $this->addFlash('info', 'Opcache Cache Removed');
+        }
+        
+        $this->addFlash('info', 'APCU not Removed');
+
+        return $this->redirectToRoute('admin_gekomod_settings_list');
+    }
 
     public function settingsCacheAction()
     {
@@ -134,7 +163,7 @@ class SettingsopCRUDController extends CRUDController
 
         return $this->redirectToRoute('admin_gekomod_settings_list');
     }
-
+    
     public function settingsUpdateAction()
     {
         $response = HttpClient::create()->request('GET', 'https://api.github.com/repos/gekomod/SettingsBundle/tags');

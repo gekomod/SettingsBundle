@@ -25,6 +25,7 @@ class SettingsAdmin extends AbstractAdmin
         $collection->add('settings_cache', 'cache', [], [], [], '', ['HTTP'], ['GET']);
         $collection->add('settings_update', 'update', [], [], [], '', ['HTTP'], ['GET']);
         $collection->add('settings_save', 'save', [], [], [], '', ['HTTP'], ['POST']);
+        $collection->add('settings_apcu_cache', 'cacheapcu', [], [], [], '', ['HTTP'], ['GET']);
     }
 
     protected function configureFormFields(FormMapper $formMapper)

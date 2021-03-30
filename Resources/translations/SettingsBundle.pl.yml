@@ -13,3 +13,4 @@ settings:
     page: 'Ustawienia'
     create: 'Dodaj Ustawienia'
     delete: 'Skasuj Wpis'
+    apcu_cache: 'Usuń Cache APCU'

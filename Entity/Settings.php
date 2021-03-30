@@ -35,8 +35,7 @@ class Settings
     private $active;
 
     /**
-     * @ORM\Column(type="integer")
-     * @ORM\Version
+     * @ORM\Column(type="bigint", length=11, nullable=true)
      */
     protected $version;
 

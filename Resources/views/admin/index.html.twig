@@ -27,6 +27,10 @@
 <a class="btn btn-app">
                 <i class="fa fa-road"></i> Show Router's
 </a>
+
+<a class="btn btn-app" href="{{ path('admin_gekomod_settings_settings_apcu_cache') }}">
+                <i class="fa fa-cloud-download"></i> {% trans %}settings.apcu_cache{% endtrans %}
+</a>
  
 {% if admin.hasRoute('create') %}
 <a class="btn btn-app" href="{{ admin.generateUrl('create') }}">
@@ -40,6 +44,7 @@
               <li class="active"><a href="#tab_1" data-toggle="tab">{% trans %}settings.settings{% endtrans %}</a></li>
               <li><a href="#tab_2" data-toggle="tab">{% trans %}settings.info{% endtrans %}</a></li>
               <li><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
+              <li><a href="#tab_4" data-toggle="tab">APCU</a></li>
               <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
             </ul>
             <div class="tab-content">
@@ -49,7 +54,7 @@
                   {{ form_errors(form) }}
     {% for single_frequency in form.name %}
         <div class="form-group">
-{{  form_widget(single_frequency.name) }}
+{{  form_widget(single_frequency.name) }} 
 
                   <label for="inputEmail3" class="col-sm-2 control-label">{{ single_frequency.name.vars.value|upper }}</label>
 
@@ -119,6 +124,11 @@
                 remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
                 sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
                 like Aldus PageMaker including versions of Lorem Ipsum.
+              </div>
+              
+              <div class="tab-pane" id="tab_4">
+               {{ apcu }}
+               
               </div>
               <!-- /.tab-pane -->
             </div>

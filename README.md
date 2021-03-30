@@ -4,7 +4,6 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/48abad81c9464796a86a42580d770620)](https://www.codacy.com/manual/gekomod/SettingsBundle?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gekomod/SettingsBundle&amp;utm_campaign=Badge_Grade)
 [![Packagist Stable Version](https://img.shields.io/packagist/v/gekomod/settings-bundle.svg)](https://packagist.org/packages/gekomod/settings-bundle)
 [![Packagist License](https://img.shields.io/packagist/l/gekomod/settings-bundle.svg)](https://packagist.org/packages/gekomod/settings-bundle)
-[![StyleCI](https://styleci.io/repos/147759811/shield?branch=master)](https://styleci.io/repos/147759811)
 
 Ustawienia z poziomu Sonata Admin + Mysql - Każdą dodaną opcje do bazy można odczytać w Twig Oraz w Kontrolerze.
 
