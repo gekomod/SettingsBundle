@@ -3,22 +3,33 @@
 namespace Gekomod\SettingsBundle\Command;
 
 use Gekomod\SettingsBundle\Entity\Settings;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Container\ContainerInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @author zaba <zaba141@o2.pl>
  */
 //final class SettingsInstallerCommand extends Command
-final class SettingsInstallerCommand extends ContainerAwareCommand
+class SettingsInstallerCommand extends Command 
 {
-    public function __construct()
+	
+	 /** @var ContainerInterface $container */
+    protected $container;
+	
+	/** @var Doctrine $doctrine */
+    protected $entity_manager;
+
+    public function __construct(EntityManager $entity_manager,$container)
     {
         parent::__construct();
+        $this->container = $container;
+		$this->doctrine = $entity_manager;
+		$this->connection = $this->container->get('doctrine.orm.default_entity_manager')->getConnection()->isConnected();
     }
-
+	
     protected function configure(): void
     {
         $this
@@ -30,17 +41,17 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
     {
         $this->title($output);
 
-        $ems = $this->getContainer()->get('doctrine');
-        $connected = $ems->getConnection()->isConnected();
-
-        if ($connected) {
+        $ems = $this->doctrine;
+		
+		if ($this->connection) {
             $this->info('You Are Not Connected To DataBase Exit from Installation', $output);
 
             return false;
         }
         $this->success('You Are Connected To Database', $output);
+		
+		$entityManager = $this->container->get('doctrine.orm.default_entity_manager');
 
-        $entityManager = $ems->getManager();
         $repository = $ems->getRepository(Settings::class);
 
         $template = $repository->findOneByName('template');
@@ -50,38 +61,38 @@ final class SettingsInstallerCommand extends ContainerAwareCommand
             $settings->setName('template');
             $settings->setVar('default');
             $settings->setActive(1);
-            $entityManager->persist($settings);
-            $entityManager->flush();
+            $this->doctrine->persist($settings);
+            $this->doctrine->flush();
 
             $settings = new Settings();
             $settings->setName('debug');
             $settings->setVar('true');
             $settings->setActive(1);
-            $entityManager->persist($settings);
-            $entityManager->flush();
+            $this->doctrine->persist($settings);
+            $this->doctrine->flush();
 
             $settings = new Settings();
             $settings->setName('seo_title');
             $settings->setVar('Your Site title');
             $settings->setActive(1);
-            $entityManager->persist($settings);
-            $entityManager->flush();
+            $this->doctrine->persist($settings);
+            $this->doctrine->flush();
 
             $settings = new Settings();
             $settings->setName('seo_meta');
             $settings->setVar('Site Meta Data');
             $settings->setActive(1);
-            $entityManager->persist($settings);
-            $entityManager->flush();
+            $this->doctrine->persist($settings);
+            $this->doctrine->flush();
 
             $settings = new Settings();
             $settings->setName('seo_description');
             $settings->setVar('Description');
             $settings->setActive(1);
-            $entityManager->persist($settings);
-            $entityManager->flush();
+            $this->doctrine->persist($settings);
+            $this->doctrine->flush();
         }
-
+		
         $success = $this->install();
 
         if ($success) {
