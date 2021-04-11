@@ -2,7 +2,9 @@ services:
         
     settings.command.installer:
         class: Gekomod\SettingsBundle\Command\SettingsInstallerCommand
-        arguments: [ "@doctrine.orm.entity_manager" ]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@service_container"
         tags:
             - { name: 'console.command', command: 'settings:install' }
 
