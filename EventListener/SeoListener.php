@@ -32,7 +32,7 @@ class SeoListener
         return $op[0];
     }
 
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController()
     {
         $seoPage = $this->container->get('sonata.seo.page');
 
