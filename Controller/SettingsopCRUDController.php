@@ -12,6 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class SettingsopCRUDController extends CRUDController
 {
@@ -73,7 +74,7 @@ class SettingsopCRUDController extends CRUDController
     {
         $packages = [];
 
-        $composerLockPath = $this->get('kernel')->getRootDir().'/../composer.lock';
+        $composerLockPath = $this->getParameter('kernel.project_dir').'/composer.lock';
         if (!$this->filesystem->exists($composerLockPath)) {
             return $packages;
         }
