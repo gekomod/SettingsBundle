@@ -22,7 +22,7 @@ class SettingsopCRUDController extends CRUDController
         $this->filesystem = new Filesystem();
     }
 
-    public function listAction(Symfony\Component\HttpFoundation\Request $request):\Symfony\Component\HttpFoundation\Response
+    public function listAction(\Symfony\Component\HttpFoundation\Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
         $rows_settings = $repository->findAll();
