@@ -23,7 +23,7 @@ class DebugListener
         $this->container = $container;
     }
 
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController()
     {   
         $em = $this->container->get('doctrine')->getManager();
         $myRepo = $em->getRepository(Settings::class);
