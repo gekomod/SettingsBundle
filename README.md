@@ -1,6 +1,6 @@
 # SettingsBundle
 
-[![Tests][1]][2] [![Symfony 2.x, 3.x and 4.x][7]][8]
+[![Tests][1]][2] [![Symfony 4.x and 6.x][7]][8]
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/48abad81c9464796a86a42580d770620)](https://www.codacy.com/manual/gekomod/SettingsBundle?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gekomod/SettingsBundle&amp;utm_campaign=Badge_Grade)
 [![Packagist Stable Version](https://img.shields.io/packagist/v/gekomod/settings-bundle.svg)](https://packagist.org/packages/gekomod/settings-bundle)
 [![Packagist License](https://img.shields.io/packagist/l/gekomod/settings-bundle.svg)](https://packagist.org/packages/gekomod/settings-bundle)
