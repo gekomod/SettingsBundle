@@ -13,20 +13,24 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
 class SettingsopCRUDController extends CRUDController
 {
     protected $filesystem;
 
-    public function __construct()
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->filesystem = new Filesystem();
+        $this->doctrine = $doctrine;
     }
 
     public function listAction(\Symfony\Component\HttpFoundation\Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $repository = $this->getDoctrine()->getRepository('SettingsBundle:Settings');
-        $rows_settings = $repository->findAll();
+       $repository = $this->doctrine->getRepository(Settings::class);
+       $rows_settings = $repository->findAll();
 
         $Settings = new Settings();
         $link = [];
@@ -52,7 +56,7 @@ class SettingsopCRUDController extends CRUDController
         } else {
             $apcu = "APCU NOT INSTALLED";
         }
-        
+
         return $this->renderWithExtraParams('@Settings/admin/index.html.twig', ['form' =>  $form->createView(), 'packages'=> $packages, 'link' => $link, 'apcu' => $apcu]);
     }
 
@@ -60,7 +64,7 @@ class SettingsopCRUDController extends CRUDController
     {
         $arrBundles = $this->getPackages();
         if (!array_key_exists($name, $arrBundles)) {
-            $info = ['name' => $name, 'exists' => 'Not Found'];
+            $info = ['name' => $name, 'exists' => 'Not Found', 'source' => '---', 'description' => 'Brak Opisu', 'version' => 'Not Installed'];
 
             return $info;
         }

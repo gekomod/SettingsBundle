@@ -3,40 +3,28 @@
 namespace Gekomod\SettingsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="Gekomod\SettingsBundle\Repository\SettingsRepository")
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'settings')]
 class Settings
 {
-    /**
-     * @var int
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue]
     public $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: Types::STRING, length: '255')]
     public $name;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: Types::STRING, length: '255')]
     private $var;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: Types::STRING, length: '255')]
     private $active;
 
-    /**
-     * @ORM\Column(type="bigint", length=11, nullable=true)
-     */
+    #[ORM\Column(type: Types::BIGINT, length: '11', nullable: true)]
     protected $version;
 
     public function __construct()

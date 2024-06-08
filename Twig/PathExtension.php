@@ -5,10 +5,11 @@ namespace Gekomod\SettingsBundle\Twig;
 use Gekomod\SettingsBundle\Entity\Settings;
 use Gekomod\SettingsBundle\Service\Settings_Get;
 use Symfony\Component\Filesystem\Filesystem;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
 use Twig\Environment;
+use Twig\TwigFunction;
 
-class PathExtension extends \Twig_Extension
+class PathExtension extends AbstractExtension
 {
     protected $doctrine;
     protected $container;
@@ -55,17 +56,17 @@ class PathExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('file_get_contents', 'file_get_contents', ['is_safe' => ['html']]),
-            new Twig_SimpleFunction('uniqid', 'uniqid'),
-            new Twig_SimpleFunction('print_r', 'print_r'),
-            new Twig_SimpleFunction('var_dump', 'var_dump'),
+            new TwigFunction('file_get_contents', 'file_get_contents', ['is_safe' => ['html']]),
+            new TwigFunction('uniqid', 'uniqid'),
+            new TwigFunction('print_r', 'print_r'),
+            new TwigFunction('var_dump', 'var_dump'),
         ];
     }
 
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFunction('settings', [$this, 'getSettings']),
+            new TwigFunction('settings', [$this, 'getSettings']),
         ];
     }
 

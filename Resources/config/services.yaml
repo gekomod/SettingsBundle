@@ -1,4 +1,6 @@
 services:
+
+    _defaults: { public: false, autowire: true, autoconfigure: true }
         
     settings.command.installer:
         class: Gekomod\SettingsBundle\Command\SettingsInstallerCommand
@@ -14,9 +16,10 @@ services:
             - ~
             - Gekomod\SettingsBundle\Entity\Settings
             - Gekomod\SettingsBundle\Controller\SettingsopCRUDController
+            - "@doctrine"
         tags:
             - { name:  sonata.admin, manager_type: orm, group: Ustawienia, label: Ustawienia}
-            
+
     gekomod_settings.form.type.settings:
         class: Gekomod\SettingsBundle\Form\SettingsType
         arguments: ["@doctrine.orm.entity_manager"]
@@ -34,9 +37,7 @@ services:
         arguments:
           - "@doctrine.orm.entity_manager"
         public: true
-        
-    _defaults: { public: false, autowire: true, autoconfigure: true }
-    
+
     Gekomod\SettingsBundle\Controller\:
         resource: '%kernel.project_dir%/vendor/gekomod/settings-bundle/Controller'
         autowire: true
@@ -46,12 +47,5 @@ services:
         class: Gekomod\SettingsBundle\EventListener\DebugListener
         arguments:
             ["@service_container","@doctrine","@twig.loader"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            
-    kernel.listener.seo_listener:
-        class: Gekomod\SettingsBundle\EventListener\SeoListener
-        arguments:
-            ["@service_container","@doctrine"]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
