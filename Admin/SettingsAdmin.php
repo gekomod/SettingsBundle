@@ -22,10 +22,10 @@ class SettingsAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
         $collection->clearExcept(['list', 'create', 'delete']);
-        $collection->add('settings_cache', 'cache', [], [], [], '', ['HTTP'], ['GET']);
-        $collection->add('settings_update', 'update', [], [], [], '', ['HTTP'], ['GET']);
-        $collection->add('settings_save', 'save', [], [], [], '', ['HTTP'], ['POST']);
-        $collection->add('settings_apcu_cache', 'cacheapcu', [], [], [], '', ['HTTP'], ['GET']);
+        $collection->add('settings_cache', 'cache', [], [], [], '', ['HTTPS'], ['GET']);
+        $collection->add('settings_update', 'update', [], [], [], '', ['HTTPS'], ['GET']);
+        $collection->add('settings_save', 'save', [], [], [], '', ['HTTPS'], ['POST']);
+        $collection->add('settings_apcu_cache', 'cacheapcu', [], [], [], '', ['HTTPS'], ['GET']);
     }
 
     protected function configureFormFields(FormMapper $formMapper): void

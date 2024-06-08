@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SettingsopCRUDController extends CRUDController
 {
@@ -40,8 +41,7 @@ class SettingsopCRUDController extends CRUDController
             $link[$v->name] = $v->id;
         }
 
-        $form = $this->createForm(SettingsFormType::class, $Settings, ['action' => $this->generateUrl('admin_gekomod_settings_settings_save'),
-            'method'                                                            => 'POST', ]);
+        $form = $this->createForm(SettingsFormType::class, $Settings, ['action' => $this->generateUrl('admin_gekomod_settings_settings_save',[],UrlGeneratorInterface::ABSOLUTE_URL), 'method'=> 'POST']);
         $packages = [
             'Sonata Page'     => $this->checkIsExists('sonata-project/page-bundle'),
             'Files Bundle'    => $this->checkIsExists('gekomod/files-bundle'),
@@ -110,7 +110,7 @@ class SettingsopCRUDController extends CRUDController
 
     public function settingsSaveAction(Request $request)
     {
-        $get_all = $request->request->get('settings_form');
+        $get_all = $request->request->all('settings_form');
 
         foreach ($get_all['name'] as $a) {
             $em = $this->getDoctrine()->getManager();
